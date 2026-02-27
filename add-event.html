@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Add Event - NexPlan</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<!-- Navbar -->
+<nav class="navbar">
+  <a href="index.html" class="logo">NexPlan</a>
+  <div class="nav-links">
+    <a href="index.html">Dashboard</a>
+    <a href="mentors.html">Mentors</a>
+  </div>
+</nav>
+
+<!-- Glitter Particles -->
+<div class="glitter-particle" style="left: 18%; animation-delay: 0.4s;"></div>
+<div class="glitter-particle" style="left: 38%; animation-delay: 1.4s;"></div>
+<div class="glitter-particle" style="left: 58%; animation-delay: 2.4s;"></div>
+<div class="glitter-particle" style="left: 78%; animation-delay: 0.9s;"></div>
+
+<div class="container page-transition">
+
+<button class="back-btn" onclick="window.location.href='forum.html'">← Back to Forum</button>
+
+<h1>Add New Event</h1>
+<p class="subtitle">Create a new event for your forum</p>
+
+<div class="form-card">
+  <h3>Event Details</h3>
+  <input id="title" placeholder="Event Title">
+  <input id="type" placeholder="Event Type (e.g., Workshop, Seminar)">
+  <input id="budget" type="number" placeholder="Budget ($)">
+  <div class="btn-container">
+    <button class="action-btn success" id="save">💾 Save Event</button>
+    <button class="action-btn danger" onclick="window.location.href='forum.html'">Cancel</button>
+  </div>
+</div>
+
+</div>
+
+<script type="module" src="add-event.js"></script>
+</body>
+</html>

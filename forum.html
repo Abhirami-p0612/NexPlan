@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Forum Dashboard - NexPlan</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<!-- Navbar -->
+<nav class="navbar">
+  <a href="index.html" class="logo">NexPlan</a>
+  <div class="nav-links">
+    <a href="index.html">Dashboard</a>
+    <a href="mentors.html">Mentors</a>
+  </div>
+</nav>
+
+<!-- Glitter Particles -->
+<div class="glitter-particle" style="left: 15%; animation-delay: 0.3s;"></div>
+<div class="glitter-particle" style="left: 35%; animation-delay: 1.3s;"></div>
+<div class="glitter-particle" style="left: 55%; animation-delay: 2.3s;"></div>
+<div class="glitter-particle" style="left: 75%; animation-delay: 0.8s;"></div>
+<div class="glitter-particle" style="left: 95%; animation-delay: 1.8s;"></div>
+
+<div class="container page-transition">
+
+<button class="back-btn" onclick="window.location.href='index.html'">← Back to Dashboard</button>
+
+<h1>Forum Dashboard</h1>
+
+<div id="forumInfo" class="forum-info"></div>
+
+<div class="btn-container">
+  <button class="action-btn warning" id="editForumBtn">✏️ Edit Forum Details</button>
+  <button class="action-btn success" onclick="window.location.href='add-event.html'">➕ Add Event</button>
+  <button class="action-btn primary" id="viewHistoryBtn">📋 View Event History</button>
+</div>
+
+<!-- Edit Forum Modal -->
+<div id="editModal" class="modal-overlay hidden">
+  <div class="modal">
+    <h3>Edit Forum Details</h3>
+    <input id="editName" placeholder="Forum Name">
+    <input id="editDesc" placeholder="Description">
+    <input id="editDomain" placeholder="Domain">
+    <div class="modal-buttons">
+      <button class="action-btn success" id="saveEdit">Save Changes</button>
+      <button class="action-btn danger" id="cancelEdit">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<h2>Event History</h2>
+<div id="events" class="events-grid"></div>
+
+</div>
+
+<script type="module" src="forum.js"></script>
+</body>
+</html>

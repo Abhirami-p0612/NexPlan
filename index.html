@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>NexPlan Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<!-- Navbar -->
+<nav class="navbar">
+  <a href="index.html" class="logo">NexPlan</a>
+  <div class="nav-links">
+    <a href="index.html" class="active">Dashboard</a>
+    <a href="mentors.html">Mentors</a>
+  </div>
+</nav>
+
+<!-- Glitter Particles -->
+<div class="glitter-particle" style="left: 10%; animation-delay: 0s;"></div>
+<div class="glitter-particle" style="left: 25%; animation-delay: 1s;"></div>
+<div class="glitter-particle" style="left: 40%; animation-delay: 2s;"></div>
+<div class="glitter-particle" style="left: 55%; animation-delay: 0.5s;"></div>
+<div class="glitter-particle" style="left: 70%; animation-delay: 1.5s;"></div>
+<div class="glitter-particle" style="left: 85%; animation-delay: 2.5s;"></div>
+
+<div class="container page-transition">
+
+<h1>NexPlan</h1>
+<p class="subtitle">Your Event & Forum Management Platform</p>
+
+<div class="glass-panel">
+  <h2>Forums</h2>
+  <div class="forum-slider">
+    <button class="slider-arrow" id="prevBtn">&#10094;</button>
+    <div id="forumList" class="forum-buttons"></div>
+    <button class="slider-arrow" id="nextBtn">&#10095;</button>
+  </div>
+  
+  <button class="register-btn" id="showFormBtn">+ Register New Forum</button>
+</div>
+
+<div id="forumForm" class="form-card hidden">
+  <h3>Register Forum</h3>
+  <input id="name" placeholder="Forum Name">
+  <input id="desc" placeholder="Description">
+  <input id="domain" placeholder="Domain">
+  <div class="file-upload-wrapper">
+    <label for="logoFile" class="file-upload-label">
+      <span id="logoFileName">📷 Upload Logo (optional)</span>
+    </label>
+    <input type="file" id="logoFile" accept="image/*" class="file-input">
+    <img id="logoPreview" class="upload-preview hidden" alt="Logo preview">
+  </div>
+  <div class="btn-container">
+    <button class="action-btn success" id="addForum">Add Forum</button>
+    <button class="action-btn danger" id="cancelForm">Cancel</button>
+  </div>
+</div>
+
+<button class="mentor-space-btn" onclick="window.location.href='mentors.html'">
+  🎓 Mentor Space
+</button>
+
+</div>
+
+<script type="module" src="index.js"></script>
+</body>
+</html>

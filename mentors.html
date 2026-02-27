@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mentor Space - NexPlan</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<!-- Navbar -->
+<nav class="navbar">
+  <a href="index.html" class="logo">NexPlan</a>
+  <div class="nav-links">
+    <a href="index.html">Dashboard</a>
+    <a href="mentors.html" class="active">Mentors</a>
+  </div>
+</nav>
+
+<!-- Glitter Particles -->
+<div class="glitter-particle" style="left: 12%; animation-delay: 0.2s;"></div>
+<div class="glitter-particle" style="left: 32%; animation-delay: 1.2s;"></div>
+<div class="glitter-particle" style="left: 52%; animation-delay: 2.2s;"></div>
+<div class="glitter-particle" style="left: 72%; animation-delay: 0.7s;"></div>
+<div class="glitter-particle" style="left: 92%; animation-delay: 1.7s;"></div>
+
+<div class="container page-transition">
+
+<button class="back-btn" onclick="window.location.href='index.html'">← Back to Dashboard</button>
+
+<h1>🎓 Mentor Space</h1>
+<p class="subtitle">Manage your mentors and their expertise</p>
+
+<div class="glass-panel">
+  <h2>Mentor Actions</h2>
+  <div class="btn-container">
+    <button class="action-btn success" id="showAddForm">➕ Add Mentor</button>
+  </div>
+</div>
+
+<!-- Add Mentor Form -->
+<div id="addMentorForm" class="form-card hidden">
+  <h3>Add New Mentor</h3>
+  <input id="mname" placeholder="Mentor Name">
+  <input id="exp" placeholder="Expertise">
+  <input id="branch" placeholder="Branch (e.g., CS, ECE, ME)">
+  <div class="file-upload-wrapper">
+    <label for="mentorPhoto" class="file-upload-label">
+      <span id="mentorPhotoName">📷 Upload Photo (optional)</span>
+    </label>
+    <input type="file" id="mentorPhoto" accept="image/*" class="file-input">
+    <img id="mentorPhotoPreview" class="upload-preview hidden" alt="Photo preview">
+  </div>
+  <div class="btn-container">
+    <button class="action-btn success" id="addMentor">Add Mentor</button>
+    <button class="action-btn danger" id="cancelAdd">Cancel</button>
+  </div>
+</div>
+
+<!-- Edit Mentor Modal -->
+<div id="editModal" class="modal-overlay hidden">
+  <div class="modal">
+    <h3>Edit Mentor</h3>
+    <input id="editName" placeholder="Mentor Name">
+    <input id="editExp" placeholder="Expertise">
+    <input id="editBranch" placeholder="Branch (e.g., CS, ECE, ME)">
+    <div class="file-upload-wrapper">
+      <label for="editMentorPhoto" class="file-upload-label">
+        <span id="editMentorPhotoName">📷 Change Photo (optional)</span>
+      </label>
+      <input type="file" id="editMentorPhoto" accept="image/*" class="file-input">
+      <img id="editMentorPhotoPreview" class="upload-preview hidden" alt="Photo preview">
+    </div>
+    <div class="modal-buttons">
+      <button class="action-btn success" id="saveEdit">Save Changes</button>
+      <button class="action-btn danger" id="cancelEdit">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal-overlay hidden">
+  <div class="modal">
+    <h3>Delete Mentor</h3>
+    <p style="text-align: center; color: #666; margin-bottom: 20px;">
+      Are you sure you want to delete this mentor? This action cannot be undone.
+    </p>
+    <div class="modal-buttons">
+      <button class="action-btn danger" id="confirmDelete">Delete</button>
+      <button class="action-btn primary" id="cancelDelete">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<h2>Mentor Directory</h2>
+<div id="mentorContainer"></div>
+
+</div>
+
+<script type="module" src="mentors.js"></script>
+</body>
+</html>
