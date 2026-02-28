@@ -9,10 +9,6 @@
 <!-- Navbar -->
 <nav class="navbar">
   <a href="index.html" class="logo">NexPlan</a>
-  <div class="nav-links">
-    <a href="index.html">Dashboard</a>
-    <a href="mentors.html" class="active">Mentors</a>
-  </div>
 </nav>
 
 <!-- Glitter Particles -->
@@ -92,6 +88,25 @@
 
 <h2>Mentor Directory</h2>
 <div id="mentorContainer"></div>
+
+<!-- AI Mentor Suggestion Chatbot -->
+<div class="glass-panel chatbot-panel">
+  <h2>🤖 AI Mentor Suggestion</h2>
+  <p class="chatbot-subtitle">Tell me your goal, and I will suggest the best mentors for you.</p>
+
+  <div id="chatMessages" class="chat-messages"></div>
+
+  <div class="chat-input-row">
+    <input id="chatInput" placeholder="Example: I need help with AI projects and interview prep">
+    <button class="action-btn primary" id="sendChat">Send</button>
+  </div>
+
+  <div class="chat-quick-actions">
+    <button class="quick-chat-btn" data-prompt="I want guidance for machine learning and AI projects">AI/ML Projects</button>
+    <button class="quick-chat-btn" data-prompt="Suggest mentors for web development and app building">Web/App Development</button>
+    <button class="quick-chat-btn" data-prompt="I need help with placement preparation and interviews">Placement Preparation</button>
+  </div>
+</div>
 
 </div>
 

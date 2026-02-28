@@ -9,10 +9,6 @@
 <!-- Navbar -->
 <nav class="navbar">
   <a href="index.html" class="logo">NexPlan</a>
-  <div class="nav-links">
-    <a href="index.html">Dashboard</a>
-    <a href="mentors.html">Mentors</a>
-  </div>
 </nav>
 
 <!-- Glitter Particles -->
@@ -33,7 +29,6 @@
 <div class="btn-container">
   <button class="action-btn warning" id="editForumBtn">✏️ Edit Forum Details</button>
   <button class="action-btn success" onclick="window.location.href='add-event.html'">➕ Add Event</button>
-  <button class="action-btn primary" id="viewHistoryBtn">📋 View Event History</button>
 </div>
 
 <!-- Edit Forum Modal -->
@@ -43,6 +38,13 @@
     <input id="editName" placeholder="Forum Name">
     <input id="editDesc" placeholder="Description">
     <input id="editDomain" placeholder="Domain">
+    <div class="file-upload-wrapper">
+      <label for="editLogoFile" class="file-upload-label">
+        <span id="editLogoFileName">📷 Upload Forum Logo (optional)</span>
+      </label>
+      <input type="file" id="editLogoFile" accept="image/*" class="file-input">
+      <img id="editLogoPreview" class="upload-preview hidden" alt="Forum logo preview">
+    </div>
     <div class="modal-buttons">
       <button class="action-btn success" id="saveEdit">Save Changes</button>
       <button class="action-btn danger" id="cancelEdit">Cancel</button>

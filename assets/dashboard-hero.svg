@@ -1,0 +1,35 @@
+<svg width="720" height="520" viewBox="0 0 720 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="80" y1="40" x2="640" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#B8C6FF" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#FFD6F9" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="220" y1="120" x2="520" y2="380" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#667EEA"/>
+      <stop offset="1" stop-color="#764BA2"/>
+    </linearGradient>
+    <linearGradient id="card" x1="260" y1="150" x2="460" y2="360" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.96"/>
+      <stop offset="1" stop-color="#F4F7FF" stop-opacity="0.96"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="110" y="60" width="500" height="390" rx="42" fill="url(#bg)"/>
+  <rect x="170" y="96" width="380" height="320" rx="30" fill="url(#accent)" fill-opacity="0.14"/>
+
+  <rect x="230" y="130" width="260" height="230" rx="24" fill="url(#card)"/>
+  <rect x="258" y="168" width="88" height="88" rx="44" fill="url(#accent)" fill-opacity="0.18"/>
+  <circle cx="302" cy="208" r="30" fill="url(#accent)"/>
+  <rect x="362" y="178" width="96" height="14" rx="7" fill="#DDE4FF"/>
+  <rect x="362" y="204" width="74" height="12" rx="6" fill="#E9EEFF"/>
+  <rect x="258" y="280" width="200" height="12" rx="6" fill="#DDE4FF"/>
+  <rect x="258" y="304" width="160" height="12" rx="6" fill="#E9EEFF"/>
+
+  <circle cx="176" cy="118" r="14" fill="#FFFFFF" fill-opacity="0.55"/>
+  <circle cx="548" cy="108" r="11" fill="#FFFFFF" fill-opacity="0.5"/>
+  <circle cx="145" cy="385" r="10" fill="#FFFFFF" fill-opacity="0.5"/>
+  <circle cx="581" cy="392" r="13" fill="#FFFFFF" fill-opacity="0.5"/>
+
+  <path d="M210 430C258 376 288 356 336 348" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="7" stroke-linecap="round"/>
+  <path d="M390 346C448 340 495 300 523 246" stroke="#FFFFFF" stroke-opacity="0.52" stroke-width="7" stroke-linecap="round"/>
+</svg>

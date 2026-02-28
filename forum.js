@@ -6,6 +6,7 @@ collection, query, where, getDocs
 
 const id = localStorage.getItem("forumId");
 let forumData = null;
+let editLogoBase64 = '';
 
 // Check authentication
 const isAuthenticated = localStorage.getItem("isAuthenticated");
@@ -17,7 +18,12 @@ async function loadForum() {
   const snap = await getDoc(doc(db, "forums", id));
   forumData = snap.data();
 
+  const logoHtml = forumData.logoUrl && forumData.logoUrl.trim()
+    ? `<img src="${forumData.logoUrl}" alt="${forumData.name} logo" class="upload-preview" style="margin: 0 auto 12px; display: block;">`
+    : '';
+
   document.getElementById("forumInfo").innerHTML = `
+    ${logoHtml}
     <h2>${forumData.name}</h2>
     <p>${forumData.description}</p>
     <p><strong>Domain:</strong> ${forumData.domain || 'N/A'}</p>
@@ -53,16 +59,87 @@ async function loadEvents() {
 
 // Edit Forum Modal
 const editModal = document.getElementById("editModal");
+const editLogoInput = document.getElementById("editLogoFile");
+
+function clearEditLogoPreview() {
+  editLogoBase64 = '';
+  const preview = document.getElementById('editLogoPreview');
+  const label = document.getElementById('editLogoFileName');
+  if (preview) {
+    preview.classList.add('hidden');
+    preview.src = '';
+  }
+  if (editLogoInput) {
+    editLogoInput.value = '';
+  }
+  if (label) {
+    label.textContent = '📷 Upload Forum Logo (optional)';
+  }
+}
+
+if (editLogoInput) {
+  editLogoInput.onchange = (event) => {
+    const file = event.target.files[0];
+    if (!file) {
+      return;
+    }
+
+    if (file.size > 500000) {
+      alert('Image too large. Please use an image under 500KB.');
+      event.target.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (loadEvent) => {
+      editLogoBase64 = loadEvent.target.result;
+      const preview = document.getElementById('editLogoPreview');
+      const label = document.getElementById('editLogoFileName');
+      if (preview) {
+        preview.src = editLogoBase64;
+        preview.classList.remove('hidden');
+      }
+      if (label) {
+        label.textContent = `✅ ${file.name}`;
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+}
 
 document.getElementById("editForumBtn").onclick = () => {
   document.getElementById("editName").value = forumData.name || '';
   document.getElementById("editDesc").value = forumData.description || '';
   document.getElementById("editDomain").value = forumData.domain || '';
+
+  if (forumData.logoUrl && forumData.logoUrl.trim()) {
+    editLogoBase64 = forumData.logoUrl;
+    const preview = document.getElementById('editLogoPreview');
+    const label = document.getElementById('editLogoFileName');
+    if (preview) {
+      preview.src = forumData.logoUrl;
+      preview.classList.remove('hidden');
+    }
+    if (label) {
+      label.textContent = '📷 Current logo (select new to change)';
+    }
+    if (editLogoInput) {
+      editLogoInput.value = '';
+    }
+  } else {
+    clearEditLogoPreview();
+    const label = document.getElementById('editLogoFileName');
+    if (label) {
+      label.textContent = '📷 Upload Forum Logo (required for this forum)';
+    }
+  }
+
   editModal.classList.remove("hidden");
 };
 
 document.getElementById("cancelEdit").onclick = () => {
   editModal.classList.add("hidden");
+  clearEditLogoPreview();
 };
 
 document.getElementById("saveEdit").onclick = async () => {
@@ -75,25 +152,28 @@ document.getElementById("saveEdit").onclick = async () => {
     return;
   }
 
+  if ((!forumData.logoUrl || !forumData.logoUrl.trim()) && !editLogoBase64) {
+    alert("Please upload a forum logo before saving.");
+    return;
+  }
+
   await updateDoc(doc(db, "forums", id), {
     name: newName,
     description: newDesc,
-    domain: newDomain
+    domain: newDomain,
+    logoUrl: editLogoBase64 || ''
   });
 
   editModal.classList.add("hidden");
+  clearEditLogoPreview();
   await loadForum();
-};
-
-// View History Button - scroll to events
-document.getElementById("viewHistoryBtn").onclick = () => {
-  document.getElementById("events").scrollIntoView({ behavior: 'smooth' });
 };
 
 // Close modal when clicking outside
 editModal.onclick = (e) => {
   if (e.target === editModal) {
     editModal.classList.add("hidden");
+    clearEditLogoPreview();
   }
 };
 

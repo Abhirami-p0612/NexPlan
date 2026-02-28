@@ -10,6 +10,7 @@ let currentEditId = null;
 let currentDeleteId = null;
 let mentorPhotoBase64 = '';
 let editMentorPhotoBase64 = '';
+let allMentors = [];
 
 // Photo upload handling for add form
 function clearMentorPhotoPreview() {
@@ -94,6 +95,7 @@ async function load() {
   const snap = await getDocs(collection(db, "mentors"));
   const container = document.getElementById("mentorContainer");
   container.innerHTML = "";
+  allMentors = [];
 
   if (snap.empty) {
     container.innerHTML = '<p class="empty-state">No mentors yet. Add your first mentor!</p>';
@@ -105,10 +107,12 @@ async function load() {
   snap.forEach(docSnap => {
     const m = docSnap.data();
     const branch = m.branch || 'Other';
+    const mentor = { ...m, id: docSnap.id };
+    allMentors.push(mentor);
     if (!branchGroups[branch]) {
       branchGroups[branch] = [];
     }
-    branchGroups[branch].push({ ...m, id: docSnap.id });
+    branchGroups[branch].push(mentor);
   });
 
   // Render each branch group
@@ -286,4 +290,187 @@ deleteModal.onclick = (e) => {
   }
 };
 
+function normalizeText(text) {
+  return (text || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function detectBranchFromQuery(query) {
+  const text = normalizeText(query);
+  const knownBranches = ['cs', 'cse', 'it', 'ece', 'eee', 'me', 'civil', 'biotech'];
+  const found = knownBranches.find((branch) => text.includes(branch));
+  return found ? found.toUpperCase() : '';
+}
+
+const intentRules = [
+  {
+    intentWords: ['ai', 'ml', 'machine learning', 'deep learning', 'data science', 'python'],
+    mentorWords: ['ai', 'ml', 'machine learning', 'deep learning', 'data science', 'python'],
+    label: 'AI/ML'
+  },
+  {
+    intentWords: ['web', 'frontend', 'backend', 'react', 'javascript', 'app', 'android', 'ios'],
+    mentorWords: ['web', 'frontend', 'backend', 'react', 'javascript', 'app', 'mobile', 'android', 'ios'],
+    label: 'Web/App Development'
+  },
+  {
+    intentWords: ['placement', 'interview', 'resume', 'career', 'aptitude'],
+    mentorWords: ['placement', 'interview', 'resume', 'career', 'aptitude'],
+    label: 'Placement Guidance'
+  },
+  {
+    intentWords: ['iot', 'embedded', 'electronics', 'hardware', 'robotics'],
+    mentorWords: ['iot', 'embedded', 'electronics', 'hardware', 'robotics'],
+    label: 'Core/Hardware'
+  }
+];
+
+function rankMentorsByQuery(query) {
+  const normalizedQuery = normalizeText(query);
+  const queryTokens = normalizedQuery.split(' ').filter(token => token.length > 2);
+  const requestedBranch = detectBranchFromQuery(normalizedQuery);
+
+  const ranked = allMentors.map((mentor) => {
+    const searchable = normalizeText(`${mentor.name || ''} ${mentor.expertise || ''} ${mentor.branch || ''}`);
+    const reasons = [];
+    let score = 0;
+
+    queryTokens.forEach((token) => {
+      if (searchable.includes(token)) {
+        score += 8;
+        reasons.push(`matches "${token}"`);
+      }
+    });
+
+    intentRules.forEach((rule) => {
+      const userIntent = rule.intentWords.some(word => normalizedQuery.includes(word));
+      const mentorIntent = rule.mentorWords.some(word => searchable.includes(word));
+      if (userIntent && mentorIntent) {
+        score += 25;
+        reasons.push(`${rule.label} alignment`);
+      }
+    });
+
+    if (requestedBranch && normalizeText(mentor.branch || '').includes(requestedBranch.toLowerCase())) {
+      score += 20;
+      reasons.push(`branch fit (${requestedBranch})`);
+    }
+
+    if (!mentor.expertise || !mentor.expertise.trim()) {
+      score += 2;
+    }
+
+    return { mentor, score, reasons };
+  });
+
+  ranked.sort((a, b) => b.score - a.score || (a.mentor.name || '').localeCompare(b.mentor.name || ''));
+  return ranked.slice(0, 3);
+}
+
+function addChatMessage(sender, text, rankedMentors = []) {
+  const chatMessages = document.getElementById('chatMessages');
+  const row = document.createElement('div');
+  row.className = `chat-row ${sender}`;
+
+  const bubble = document.createElement('div');
+  bubble.className = `chat-bubble ${sender}`;
+
+  const textNode = document.createElement('p');
+  textNode.className = 'chat-text';
+  textNode.textContent = text;
+  bubble.appendChild(textNode);
+
+  if (sender === 'bot' && rankedMentors.length > 0) {
+    const listTitle = document.createElement('div');
+    listTitle.className = 'suggestion-title';
+    listTitle.textContent = 'Top mentor matches:';
+    bubble.appendChild(listTitle);
+
+    const list = document.createElement('ul');
+    list.className = 'suggestion-list';
+
+    rankedMentors.forEach((entry, index) => {
+      const item = document.createElement('li');
+      item.textContent = `${index + 1}. ${entry.mentor.name} — ${entry.mentor.expertise || 'General guidance'} (${entry.mentor.branch || 'Other'})`;
+      list.appendChild(item);
+    });
+
+    bubble.appendChild(list);
+  }
+
+  row.appendChild(bubble);
+  chatMessages.appendChild(row);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function buildBotReply(message) {
+  if (!allMentors.length) {
+    return {
+      text: 'No mentors are available yet. Please add mentors first, then I can suggest the best match.',
+      ranked: []
+    };
+  }
+
+  const ranked = rankMentorsByQuery(message);
+  const topScore = ranked[0]?.score || 0;
+
+  if (topScore <= 0) {
+    return {
+      text: 'I could not find strong keyword matches, so I picked versatile options. Try adding specific skills like AI, web, interviews, or branch.',
+      ranked
+    };
+  }
+
+  return {
+    text: 'Based on your requirement, these mentors look like the best fit right now.',
+    ranked
+  };
+}
+
+function handleChatSubmit(prefilledMessage = '') {
+  const input = document.getElementById('chatInput');
+  const message = (prefilledMessage || input.value).trim();
+
+  if (!message) {
+    return;
+  }
+
+  addChatMessage('user', message);
+  input.value = '';
+
+  const reply = buildBotReply(message);
+  addChatMessage('bot', reply.text, reply.ranked);
+}
+
+function setupMentorChatbot() {
+  const chatMessages = document.getElementById('chatMessages');
+  const sendButton = document.getElementById('sendChat');
+  const chatInput = document.getElementById('chatInput');
+
+  if (!chatMessages || !sendButton || !chatInput) {
+    return;
+  }
+
+  if (chatMessages.childElementCount === 0) {
+    addChatMessage('bot', 'Hi! Describe your goal and I will suggest the best mentors for you.');
+  }
+
+  sendButton.onclick = () => handleChatSubmit();
+  chatInput.onkeypress = (event) => {
+    if (event.key === 'Enter') {
+      handleChatSubmit();
+    }
+  };
+
+  document.querySelectorAll('.quick-chat-btn').forEach((button) => {
+    button.onclick = () => {
+      handleChatSubmit(button.dataset.prompt || '');
+    };
+  });
+}
+
+setupMentorChatbot();
 load();
