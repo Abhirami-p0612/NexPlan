@@ -1,6 +1,7 @@
 <p align="center">
-  <img src="<img width="1280" height="640" alt="img" src="https://github.com/user-attachments/assets/3fb59af6-8928-42c4-847a-fa9d69b23580" />
-" alt="Project Banner" width="100%">
+  <img width="1280" height="640" alt="img" src="https://github.com/user-attachments/assets/6b1a5df6-d1d6-48b6-bae3-1a785ee5f845" />
+
+
 </p>
 # Nexplan 🎯
 
