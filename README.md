@@ -1,8 +1,7 @@
 <p align="center">
   <img width="1280" height="640" alt="img" src="https://github.com/user-attachments/assets/6b1a5df6-d1d6-48b6-bae3-1a785ee5f845" />
-
-
 </p>
+
 # Nexplan 🎯
 
 ## Basic Details
